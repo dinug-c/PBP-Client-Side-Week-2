@@ -1,17 +1,42 @@
-function validateForm() {
-    const name1 = document.getElementById("name").value;
-    const name2 = document.getElementById("name2").value;
 
-    if (name1 === "" || name2 === "") {
-        alert("Name must be filled out");
-        return false;
-    }
-    if (name1 === name2) {
-        alert("Name must be different");
-        return false;
+function setMessage(lovePercentage) {
+    const hasilText = document.getElementById("hasil-text");
+
+    if (lovePercentage >= 100) {
+        hasilText.textContent =
+            "Selamat anda cocok silahkan segera ke KUA sebelum pasangan anda ditikung teman sebelah anda";
+    } else if (lovePercentage >= 80 && lovePercentage <= 99) {
+        hasilText.textContent =
+            "Pepet Terus sampai jadi, tapi inget batasan ya! janganlah anda berbuat zina";
+    } else if (lovePercentage >= 65 && lovePercentage <= 79) {
+        hasilText.textContent =
+            "Kamu HTSan ya? kalo aku mah yang pasti-pasti aja atau mungkin dia ada yang lain?";
+    } else if (lovePercentage >= 45 && lovePercentage <= 64) {
+        hasilText.textContent =
+            "Yakin ngga dia serius? Atau kamu buat pelariannya aja";
+    } else {
+        hasilText.textContent = "Kata aku sih ngga cocok ya, mending cari yang lain!";
     }
 
-    return true;
+}
+
+function updateProgressBar(lovePercentage) {
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    let width = 0;
+    const interval = setInterval(() => {
+        if (width >= lovePercentage) {
+            clearInterval(interval);
+            setMessage(lovePercentage);
+            if (lovePercentage >= 70) {
+                callLove();
+            }
+        } else {
+            width += 5;
+            progressBar.style.width = width + "%";
+            progressText.innerHTML = width + "%";
+        }
+    }, 200);
 }
 
 function calculateLovePercentage(name1, name2) {
@@ -27,61 +52,97 @@ function calculateLovePercentage(name1, name2) {
 
     const nameLengthSum = name1Lower.length + name2Lower.length;
     const lovePercentage = (commonCount / nameLengthSum) * 100;
-    return lovePercentage * 2;
+    const loveFinal = lovePercentage * 2;
+
+    return loveFinal;
 }
 
-function ValidateGender() {
-    const CewekRadio = document.getElementById("CewekRadio");
-    const CowokRadio = document.getElementById("CowokRadio");
+function LCSLength(X, Y) {
+    const m = X.length;
+    const n = Y.length;
 
-    CewekRadio.addEventListener("change", function() {
-        if (CewekRadio.checked) {
-            CowokRadio.checked = false; 
+    const L = [];
+    for (let i = 0; i <= m; i++) {
+        L[i] = new Array(n + 1).fill(0);
+    }
+
+    for (let i = 0; i <= m; i++) {
+        for (let j = 0; j <= n; j++) {
+            if (i === 0 || j === 0) {
+                L[i][j] = 0;
+            } else if (X[i - 1] === Y[j - 1]) {
+                L[i][j] = L[i - 1][j - 1] + 1;
+            } else {
+                L[i][j] = Math.max(L[i - 1][j], L[i][j - 1]);
+            }
         }
-    });
+    }
 
-    CowokRadio.addEventListener("change", function() {
-        if (CowokRadio.checked) {
-            CewekRadio .checked = false; 
-        }
-    });
-
+    return L[m][n];
 }
 
+function MatchingScore(name1, name2) {
+    const m = name1.length;
+    const n = name2.length;
+
+    const lcsLength = LCSLength(name1, name2);
+    const maxLen = Math.max(m, n);
+
+    const matchScore = (lcsLength / maxLen) * 100;
+
+    return matchScore;
+}
+
+
+function calculateNormal() {
+    return Math.floor(Math.random() * 101);
+}
 
 function validateForm() {
-    const name1 = document.getElementById("name").value;
-    const name2 = document.getElementById("name2").value;
+    const formKamu = document.forms["form-kamu"];
+    const formCrush = document.forms["form-crush"];
 
-    if (name1 === "" || name2 === "") {
-        alert("Name must be filled out");
+    if (formKamu['nama-kamu'].value === "" || formCrush['nama-crush'].value === "") {
+        alert("Nama harus diisi!");
         return false;
     }
-    if (name1 === name2) {
-        alert("Name must be different");
+    if (formKamu['nama-kamu'].value === formCrush['nama-crush'].value) {
+        alert("Nama harus berbeda!");
         return false;
     }
 
+    const jenisKelaminKamu = formKamu["jenis_kelamin_kamu"];
+    const jenisKelaminCrush = formCrush["jenis_kelamin_crush"];
+
+    if (jenisKelaminKamu.value === "") {
+        alert("Pilih jenis kelamin kamu!");
+        return false;
+    }
+
+    if (jenisKelaminCrush.value === "") {
+        alert("Pilih jenis kelamin pasanganmu!");
+        return false;
+    }
+
+    const lovePercentage = calculateNormal();
+    updateProgressBar(lovePercentage);
     return true;
+
 }
 
-function calculateLovePercentage(name1, name2) {
-    const name1Lower = name1.toLowerCase();
-    const name2Lower = name2.toLowerCase();
-    let commonCount = 0;
+function validateGender() {
+    const cewekRadioKamu = document.getElementById("cewek-radio-kamu");
+    const cowokRadioKamu = document.getElementById("cowok-radio-kamu");
+    const cewekRadioCrush = document.getElementById("cewek-radio-crush");
+    const cowokRadioCrush = document.getElementById("cowok-radio-crush");
 
-    for (const char of name1Lower) {
-        if (name2Lower.includes(char)) {
-            commonCount++;
-        }
+    if (cewekRadioKamu.checked == true) {
+        cowokRadioCrush.checked = true;
+    } else if (cowokRadioKamu.checked == true) {
+        cewekRadioCrush.checked = true;
+    } else if (cewekRadioCrush.checked == true) {
+        cowokRadioKamu.checked = true;
+    } else if (cowokRadioCrush.checked == true) {
+        cewekRadioKamu.checked = true;
     }
-
-    const nameLengthSum = name1Lower.length + name2Lower.length;
-    const lovePercentage = (commonCount / nameLengthSum) * 100;
-    return lovePercentage * 2;
 }
-
-const person1 = "randika";
-const person2 = "randira";
-const lovePercentage = calculateLovePercentage(person1, person2);
-console.log(`Love Percentage between ${person1} and ${person2}: ${lovePercentage}%`);

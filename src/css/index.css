@@ -1,0 +1,38 @@
+html {
+  min-height: 100%;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-image: radial-gradient(
+      at 46% 71%,
+      hsla(288, 0%, 100%, 1) 0px,
+      transparent 100%
+    ),
+    radial-gradient(at 80% -10%, hsla(0, 74%, 65%, 0.5) 0px, transparent 80%),
+    radial-gradient(at 60% -20%, hsla(341, 85%, 69%, 1) 0px, transparent 30%),
+    radial-gradient(at 20% -10%, hsla(268, 65%, 69%, 0.5) 0px, transparent 80%);
+  animation: gradient 15s ease infinite;
+}
+
+.anim {
+  transition: width 0.3s ease-in-out;
+}
+
+@keyframes gradient {
+  0% {
+    background-color: #fff;
+  }
+  25% {
+    background-color: #f4caff;
+  }
+  50% {
+    background-color: #ffcae0;
+  }
+  75% {
+    background-color: #f1cad9;
+  }
+  100% {
+    background-color: #fff;
+  }
+}
