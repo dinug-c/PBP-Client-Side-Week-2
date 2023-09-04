@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heart-shaped Progress Bar</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .progress-container {
+        width: 200px;
+        height: 20px;
+        background-color: #eee;
+        position: relative;
+        border-radius: 20px;
+      }
+
+      .progress-bar {
+        width: 50%;
+        height: 100%;
+        background-color: #ff6b6b; /* Warna latar belakang progress */
+        position: absolute;
+        border-radius: 20px;
+        transition: width 1s ease-in-out; /* Animasi lebar progress */
+      }
+
+      .heart {
+        position: absolute;
+        top: -10px;
+        left: calc(50% - 10px);
+        width: 20px;
+        height: 20px;
+        background-color: #ff6b6b; /* Warna hati */
+        clip-path: polygon(
+          50% 0%,
+          100% 35%,
+          80% 70%,
+          50% 100%,
+          20% 70%,
+          0% 35%
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+      <div class="heart"></div>
+    </div>
+  </body>
+</html>

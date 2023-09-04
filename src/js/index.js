@@ -23,14 +23,13 @@ function setMessage(lovePercentage) {
 function updateProgressBar(lovePercentage) {
     const progressBar = document.getElementById("progressBar");
     const progressText = document.getElementById("progressText");
+
     let width = 0;
     const interval = setInterval(() => {
         if (width >= lovePercentage) {
             clearInterval(interval);
             setMessage(lovePercentage);
-            if (lovePercentage >= 70) {
-                callLove();
-            }
+
         } else {
             width += 5;
             progressBar.style.width = width + "%";
@@ -56,43 +55,6 @@ function calculateLovePercentage(name1, name2) {
 
     return loveFinal;
 }
-
-function LCSLength(X, Y) {
-    const m = X.length;
-    const n = Y.length;
-
-    const L = [];
-    for (let i = 0; i <= m; i++) {
-        L[i] = new Array(n + 1).fill(0);
-    }
-
-    for (let i = 0; i <= m; i++) {
-        for (let j = 0; j <= n; j++) {
-            if (i === 0 || j === 0) {
-                L[i][j] = 0;
-            } else if (X[i - 1] === Y[j - 1]) {
-                L[i][j] = L[i - 1][j - 1] + 1;
-            } else {
-                L[i][j] = Math.max(L[i - 1][j], L[i][j - 1]);
-            }
-        }
-    }
-
-    return L[m][n];
-}
-
-function MatchingScore(name1, name2) {
-    const m = name1.length;
-    const n = name2.length;
-
-    const lcsLength = LCSLength(name1, name2);
-    const maxLen = Math.max(m, n);
-
-    const matchScore = (lcsLength / maxLen) * 100;
-
-    return matchScore;
-}
-
 
 function calculateNormal() {
     return Math.floor(Math.random() * 101);
